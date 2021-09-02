@@ -1,0 +1,21 @@
+import UIKit
+
+private var maxChar = [UITextField: Int]()
+extension UITextField {
+    @IBInspectable var maxCharacter: Int {
+        get {
+            guard let defaultMax = maxChar[self] else {
+               return 150 // default limit for textField
+            }
+            return defaultMax
+        }
+        set {
+            maxChar[self] = newValue
+            addTarget(self, action: #selector(validate), for: .editingChanged)
+        }
+    }
+    @objc func validate(textField: UITextField) {
+        let t = textField.text
+        textField.text = t?.prefix(maxCharacter).description
+    }
+}
